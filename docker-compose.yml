@@ -1,0 +1,14 @@
+version: "3"
+services:
+  pg:
+    image:  postgres:15-alpine
+    volumes:
+      - postgresql:/var/lib/postgresql/data:delegated
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "127.0.0.1:5433:5432"
+
+volumes:
+  postgresql:
