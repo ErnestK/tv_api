@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Movie < ApplicationRecord
   has_one :content, as: :contentable, dependent: :destroy
 
@@ -8,4 +10,4 @@ class Movie < ApplicationRecord
       movie
     end
   end
-end 
+end

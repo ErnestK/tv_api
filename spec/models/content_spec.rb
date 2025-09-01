@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Content, type: :model do
@@ -17,17 +19,17 @@ RSpec.describe Content, type: :model do
   it 'works with polymorphic association' do
     movie = create(:movie)
     content = create(:content, contentable: movie)
-    
-    expect(content.contentable_type).to eq "Movie"
+
+    expect(content.contentable_type).to eq 'Movie'
     expect(content.contentable).to eq movie
   end
 
   it 'enforces uniqueness per contentable' do
     movie = create(:movie)
     create(:content, contentable: movie)
-    
-    expect {
+
+    expect do
       create(:content, contentable: movie)
-    }.to raise_error(ActiveRecord::RecordNotUnique)
+    end.to raise_error(ActiveRecord::RecordNotUnique)
   end
-end 
+end

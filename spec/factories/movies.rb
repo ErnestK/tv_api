@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :movie do
     year { 2023 }
@@ -9,4 +11,4 @@ FactoryBot.define do
       create(:content, contentable: movie)
     end
   end
-end 
+end
