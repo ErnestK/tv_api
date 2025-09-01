@@ -7,26 +7,26 @@ Rails.logger.debug 'Creating movies with content...'
 
 movies_data = [
   {
-    movie: { year: 2014, duration_in_seconds: 10_140 },
-    content: { original_name: 'Interstellar' }
+    movie: { duration_in_seconds: 10_140 },
+    content: { original_name: 'Interstellar', year: 2014 }
   },
   {
-    movie: { year: 2010, duration_in_seconds: 8880 },
-    content: { original_name: 'Inception' }
+    movie: { duration_in_seconds: 8880 },
+    content: { original_name: 'Inception', year: 2010 }
   },
   {
-    movie: { year: 1994, duration_in_seconds: 8520 },
-    content: { original_name: 'The Shawshank Redemption' }
+    movie: { duration_in_seconds: 8520 },
+    content: { original_name: 'The Shawshank Redemption', year: 1994 }
   },
   {
-    movie: { year: 2008, duration_in_seconds: 9120 },
-    content: { original_name: 'The Dark Knight' }
+    movie: { duration_in_seconds: 9120 },
+    content: { original_name: 'The Dark Knight', year: 2008 }
   }
 ]
 
 movies_data.each do |data|
   movie = Movie.create_with_content!(data[:movie], data[:content])
-  Rails.logger.debug { "✓ Created movie: #{movie.content.original_name} (#{movie.year})" }
+  Rails.logger.debug { "✓ Created movie: #{movie.content.original_name} (#{movie.content.year})" }
 end
 
 Rails.logger.debug { "Done! Created #{Movie.count} movies with content." }
@@ -36,25 +36,25 @@ Rails.logger.debug 'Creating TV shows with content...'
 
 # Breaking Bad
 breaking_bad = TvShow.create_with_content!(
-  { year: 2008 },
-  { original_name: 'Breaking Bad' }
+  {},
+  { original_name: 'Breaking Bad', year: 2008 }
 )
 
 # Season 1
 season1 = TvShowsSeason.create_with_content!(
-  { tv_show: breaking_bad, number: 1, year: 2008 },
-  { original_name: 'Breaking Bad Season 1' }
+  { tv_show: breaking_bad, number: 1 },
+  { original_name: 'Breaking Bad Season 1', year: 2008 }
 )
 
 # Episodes for Season 1
 TvShowsSeasonsEpisode.create_with_content!(
-  { tv_shows_season: season1, number: 1, year: 2008, duration_in_seconds: 3480 },
-  { original_name: 'Pilot' }
+  { tv_shows_season: season1, number: 1, duration_in_seconds: 3480 },
+  { original_name: 'Pilot', year: 2008 }
 )
 
 TvShowsSeasonsEpisode.create_with_content!(
-  { tv_shows_season: season1, number: 2, year: 2008, duration_in_seconds: 2880 },
-  { original_name: 'Cat\'s in the Bag...' }
+  { tv_shows_season: season1, number: 2, duration_in_seconds: 2880 },
+  { original_name: 'Cat\'s in the Bag...', year: 2008 }
 )
 
 Rails.logger.debug do

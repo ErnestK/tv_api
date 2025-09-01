@@ -32,20 +32,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_184136) do
     t.string "original_name", limit: 255, null: false
     t.string "contentable_type", limit: 50, null: false
     t.bigint "contentable_id", null: false
+    t.integer "year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contentable_type", "contentable_id"], name: "idx_content_polymorphic", unique: true
   end
 
   create_table "movies", force: :cascade do |t|
-    t.integer "year", null: false
     t.integer "duration_in_seconds", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "tv_shows", force: :cascade do |t|
-    t.integer "year", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -53,7 +52,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_184136) do
   create_table "tv_shows_seasons", force: :cascade do |t|
     t.bigint "tv_show_id", null: false
     t.integer "number", null: false
-    t.integer "year", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tv_show_id", "number"], name: "idx_seasons_show_number", unique: true
@@ -62,7 +60,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_184136) do
   create_table "tv_shows_seasons_episodes", force: :cascade do |t|
     t.bigint "tv_shows_season_id", null: false
     t.integer "number", null: false
-    t.integer "year", null: false
     t.integer "duration_in_seconds", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

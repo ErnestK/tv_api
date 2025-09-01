@@ -3,7 +3,6 @@ class CreateTvShowsSeasons < ActiveRecord::Migration[7.1]
     create_table :tv_shows_seasons, id: :bigserial do |t|
       t.bigint :tv_show_id, null: false
       t.integer :number, null: false
-      t.integer :year, null: false
 
       t.timestamps
     end
