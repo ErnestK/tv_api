@@ -106,4 +106,12 @@ Rails.logger.debug do
   "Created #{Channel.count} channels with #{ChannelProgram.count} programs"
 end
 
+# Creating Apps
+Rails.logger.debug 'Creating apps...'
+
+App.create_with_content!({}, { original_name: 'Netflix Mobile App', year: 2023 })
+App.create_with_content!({}, { original_name: 'HBO Max App', year: 2022 })
+
+Rails.logger.debug { "Created #{App.count} apps" }
+
 Rails.logger.debug { "Total content records: #{Content.count}" }
