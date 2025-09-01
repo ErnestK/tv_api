@@ -61,3 +61,49 @@ Rails.logger.debug do
   "Created TV show: #{breaking_bad.content.original_name} " \
     "with #{breaking_bad.tv_shows_seasons.count} seasons"
 end
+
+# Creating Channels and Programs
+Rails.logger.debug 'Creating channels with programs...'
+
+# HBO Channel
+hbo = Channel.create_with_content!(
+  {},
+  { original_name: 'HBO' }
+)
+
+# Channel Programs for HBO
+ChannelProgram.create_with_content!(
+  {
+    channel: hbo,
+    time_range: Time.zone.parse('2024-01-01 20:00')..Time.zone.parse('2024-01-01 22:00')
+  },
+  { original_name: 'Game of Thrones Rerun' }
+)
+
+ChannelProgram.create_with_content!(
+  {
+    channel: hbo,
+    time_range: Time.zone.parse('2024-01-01 22:00')..Time.zone.parse('2024-01-02 00:00')
+  },
+  { original_name: 'The Last of Us' }
+)
+
+# Netflix Channel
+netflix = Channel.create_with_content!(
+  {},
+  { original_name: 'Netflix' }
+)
+
+ChannelProgram.create_with_content!(
+  {
+    channel: netflix,
+    time_range: Time.zone.parse('2024-01-01 19:00')..Time.zone.parse('2024-01-01 20:30')
+  },
+  { original_name: 'Stranger Things Marathon' }
+)
+
+Rails.logger.debug do
+  "Created #{Channel.count} channels with #{ChannelProgram.count} programs"
+end
+
+Rails.logger.debug { "Total content records: #{Content.count}" }

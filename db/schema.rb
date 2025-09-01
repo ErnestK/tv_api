@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_01_181140) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_01_184136) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "btree_gist"
   enable_extension "plpgsql"
+
+  create_table "channel_programs", force: :cascade do |t|
+    t.bigint "channel_id", null: false
+    t.tstzrange "time_range", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id", "time_range"], name: "idx_channel_programs_channel_time_composite", using: :gist
+  end
+
+  create_table "channels", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "contents", force: :cascade do |t|
     t.string "original_name", limit: 255, null: false
@@ -55,6 +69,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_181140) do
     t.index ["tv_shows_season_id", "number"], name: "idx_episodes_season_number", unique: true
   end
 
+  add_foreign_key "channel_programs", "channels"
   add_foreign_key "tv_shows_seasons", "tv_shows"
   add_foreign_key "tv_shows_seasons_episodes", "tv_shows_seasons"
 end
