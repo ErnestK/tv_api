@@ -57,4 +57,7 @@ TvShowsSeasonsEpisode.create_with_content!(
   { original_name: 'Cat\'s in the Bag...' }
 )
 
-Rails.logger.debug { "Created TV show: #{breaking_bad.content.original_name} with #{breaking_bad.tv_shows_seasons.count} seasons" }
+Rails.logger.debug do
+  "Created TV show: #{breaking_bad.content.original_name} " \
+    "with #{breaking_bad.tv_shows_seasons.count} seasons"
+end

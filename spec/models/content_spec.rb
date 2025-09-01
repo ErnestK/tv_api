@@ -17,19 +17,17 @@ RSpec.describe Content, type: :model do
   end
 
   it 'works with polymorphic association' do
-    movie = create(:movie)
-    content = create(:content, contentable: movie)
+    content = create(:content)
 
     expect(content.contentable_type).to eq 'Movie'
-    expect(content.contentable).to eq movie
+    expect(content.contentable).to be_a(Movie)
   end
 
   it 'enforces uniqueness per contentable' do
     movie = create(:movie)
-    create(:content, contentable: movie)
 
     expect do
-      create(:content, contentable: movie)
+      described_class.create!(contentable: movie, original_name: 'Duplicate')
     end.to raise_error(ActiveRecord::RecordNotUnique)
   end
 end
