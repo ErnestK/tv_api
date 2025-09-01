@@ -114,6 +114,33 @@ App.create_with_content!({}, { original_name: 'HBO Max App', year: 2022 })
 
 Rails.logger.debug { "Created #{App.count} apps" }
 
+# Creating Countries
+Rails.logger.debug 'Creating countries...'
+
+us = Country.find_or_create_by!(code: 'US') { |c| c.name = 'United States' }
+uk = Country.find_or_create_by!(code: 'GB') { |c| c.name = 'United Kingdom' }
+Country.find_or_create_by!(code: 'ES') { |c| c.name = 'Spain' }
+
+# Creating Availability records
+Rails.logger.debug 'Creating availability records...'
+
+netflix_app = App.joins(:content).find_by(contents: { original_name: 'Netflix Mobile App' })
+hbo_app = App.joins(:content).find_by(contents: { original_name: 'HBO Max App' })
+interstellar_content = Content.find_by(original_name: 'Interstellar')
+
+# Netflix available in US and UK
+if netflix_app && interstellar_content
+  Availability.create!(content: interstellar_content, app: netflix_app, country: us)
+  Availability.create!(content: interstellar_content, app: netflix_app, country: uk)
+end
+
+# HBO available in US only
+Availability.create!(content: interstellar_content, app: hbo_app, country: us) if hbo_app && interstellar_content
+
+Rails.logger.debug do
+  "Created #{Country.count} countries and #{Availability.count} availability records"
+end
+
 # Creating Users and their activity
 Rails.logger.debug 'Creating users and their activity...'
 

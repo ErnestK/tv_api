@@ -10,13 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_01_190211) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_01_191639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "plpgsql"
 
   create_table "apps", force: :cascade do |t|
     t.datetime "created_at", precision: nil
+  end
+
+  create_table "availabilities", force: :cascade do |t|
+    t.bigint "content_id", null: false
+    t.bigint "app_id", null: false
+    t.bigint "country_id", null: false
+    t.datetime "created_at", precision: nil
+    t.index ["content_id", "app_id", "country_id"], name: "idx_availability_unique", unique: true
   end
 
   create_table "channel_programs", force: :cascade do |t|
@@ -40,6 +48,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_190211) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contentable_type", "contentable_id"], name: "idx_content_polymorphic", unique: true
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name", limit: 100, null: false
+    t.string "code", limit: 5, null: false
+    t.datetime "created_at", precision: nil
+    t.index ["name"], name: "index_countries_on_name", unique: true
   end
 
   create_table "favorites", force: :cascade do |t|
@@ -93,6 +108,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_190211) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "availabilities", "apps"
+  add_foreign_key "availabilities", "contents"
+  add_foreign_key "availabilities", "countries"
   add_foreign_key "channel_programs", "channels"
   add_foreign_key "favorites", "contents"
   add_foreign_key "favorites", "users"
