@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Content, type: :model do
-  let(:content) { build(:content) }
+  let(:movie) { create(:movie) }
+  let(:content) { build(:content, contentable: movie) }
 
   it 'validates required fields' do
     content.original_name = nil
@@ -17,7 +18,7 @@ RSpec.describe Content, type: :model do
   end
 
   it 'works with polymorphic association' do
-    content = create(:content)
+    content = movie.content
 
     expect(content.contentable_type).to eq 'Movie'
     expect(content.contentable).to be_a(Movie)

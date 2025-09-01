@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_01_185306) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_01_190211) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "plpgsql"
@@ -42,6 +42,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_185306) do
     t.index ["contentable_type", "contentable_id"], name: "idx_content_polymorphic", unique: true
   end
 
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "content_id", null: false
+    t.datetime "created_at", precision: nil
+    t.index ["user_id", "content_id"], name: "idx_favorites_user_content", unique: true
+  end
+
+  create_table "most_watcheds", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "content_id", null: false
+    t.integer "time_overall", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "content_id"], name: "idx_most_watched_user_content", unique: true
+    t.index ["user_id", "time_overall"], name: "idx_most_watched_time"
+  end
+
   create_table "movies", force: :cascade do |t|
     t.integer "duration_in_seconds", null: false
     t.datetime "created_at", null: false
@@ -70,7 +87,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_185306) do
     t.index ["tv_shows_season_id", "number"], name: "idx_episodes_season_number", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "name", limit: 255, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "channel_programs", "channels"
+  add_foreign_key "favorites", "contents"
+  add_foreign_key "favorites", "users"
+  add_foreign_key "most_watcheds", "contents"
+  add_foreign_key "most_watcheds", "users"
   add_foreign_key "tv_shows_seasons", "tv_shows"
   add_foreign_key "tv_shows_seasons_episodes", "tv_shows_seasons"
 end

@@ -114,4 +114,25 @@ App.create_with_content!({}, { original_name: 'HBO Max App', year: 2022 })
 
 Rails.logger.debug { "Created #{App.count} apps" }
 
+# Creating Users and their activity
+Rails.logger.debug 'Creating users and their activity...'
+
+john = User.create!(name: 'John Doe')
+jane = User.create!(name: 'Jane Smith')
+
+# Add some favorites
+interstellar_content = Content.find_by(original_name: 'Interstellar')
+breaking_bad_content = Content.find_by(original_name: 'Breaking Bad')
+
+john.favorites.create!(content: interstellar_content) if interstellar_content
+jane.favorites.create!(content: breaking_bad_content) if breaking_bad_content
+
+# Add watch time
+john.most_watched.create!(content: interstellar_content, time_overall: 7200) if interstellar_content
+jane.most_watched.create!(content: breaking_bad_content, time_overall: 3600) if breaking_bad_content
+
+Rails.logger.debug do
+  "Created #{User.count} users with #{Favorite.count} favorites and #{MostWatched.count} watch records"
+end
+
 Rails.logger.debug { "Total content records: #{Content.count}" }

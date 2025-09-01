@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :content do
-    original_name { 'Sample Content' }
+  factory :user do
+    name { 'John Doe' }
   end
 end
