@@ -30,3 +30,31 @@ movies_data.each do |data|
 end
 
 Rails.logger.debug { "Done! Created #{Movie.count} movies with content." }
+
+# Creating TV Shows
+Rails.logger.debug 'Creating TV shows with content...'
+
+# Breaking Bad
+breaking_bad = TvShow.create_with_content!(
+  { year: 2008 },
+  { original_name: 'Breaking Bad' }
+)
+
+# Season 1
+season1 = TvShowsSeason.create_with_content!(
+  { tv_show: breaking_bad, number: 1, year: 2008 },
+  { original_name: 'Breaking Bad Season 1' }
+)
+
+# Episodes for Season 1
+TvShowsSeasonsEpisode.create_with_content!(
+  { tv_shows_season: season1, number: 1, year: 2008, duration_in_seconds: 3480 },
+  { original_name: 'Pilot' }
+)
+
+TvShowsSeasonsEpisode.create_with_content!(
+  { tv_shows_season: season1, number: 2, year: 2008, duration_in_seconds: 2880 },
+  { original_name: 'Cat\'s in the Bag...' }
+)
+
+Rails.logger.debug { "Created TV show: #{breaking_bad.content.original_name} with #{breaking_bad.tv_shows_seasons.count} seasons" }

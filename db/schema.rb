@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_01_173254) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_01_181140) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,10 +24,37 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_173254) do
   end
 
   create_table "movies", force: :cascade do |t|
-    t.integer "year"
-    t.integer "duration_in_seconds"
+    t.integer "year", null: false
+    t.integer "duration_in_seconds", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "tv_shows", force: :cascade do |t|
+    t.integer "year", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tv_shows_seasons", force: :cascade do |t|
+    t.bigint "tv_show_id", null: false
+    t.integer "number", null: false
+    t.integer "year", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tv_show_id", "number"], name: "idx_seasons_show_number", unique: true
+  end
+
+  create_table "tv_shows_seasons_episodes", force: :cascade do |t|
+    t.bigint "tv_shows_season_id", null: false
+    t.integer "number", null: false
+    t.integer "year", null: false
+    t.integer "duration_in_seconds", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tv_shows_season_id", "number"], name: "idx_episodes_season_number", unique: true
+  end
+
+  add_foreign_key "tv_shows_seasons", "tv_shows"
+  add_foreign_key "tv_shows_seasons_episodes", "tv_shows_seasons"
 end
