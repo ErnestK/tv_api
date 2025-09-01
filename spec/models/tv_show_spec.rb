@@ -12,7 +12,7 @@ RSpec.describe TvShow, type: :model do
   end
 
   it 'creates with content using factory method' do
-    tv_show = described_class.create_with_content!({ year: 2020 }, { original_name: 'Test Show' })
+    tv_show = described_class.create_with_content!({}, { original_name: 'Test Show', year: 2020 })
 
     expect(tv_show.content.original_name).to eq 'Test Show'
   end
