@@ -95,18 +95,30 @@ RSpec.describe 'Api::V1::Contents', type: :request do
   end
 
   describe 'GET /api/v1/contents/search' do
-    let!(:interstellar_movie) { create(:movie).tap { |m| m.content.update!(original_name: 'Interstellar', year: 2014) } }
-    let!(:dark_knight_movie) { create(:movie).tap { |m| m.content.update!(original_name: 'The Dark Knight', year: 2008) } }
-    let!(:netflix_app) { create(:provider_app).tap { |a| a.content.update!(original_name: 'Netflix Mobile App', year: 2023) } }
+    let!(:interstellar_movie) do
+      create(:movie).tap do |m|
+        m.content.update!(original_name: 'Interstellar', year: 2014)
+      end
+    end
+    let!(:dark_knight_movie) do
+      create(:movie).tap do |m|
+        m.content.update!(original_name: 'The Dark Knight', year: 2008)
+      end
+    end
+    let!(:netflix_app) do
+      create(:provider_app).tap do |a|
+        a.content.update!(original_name: 'Netflix Mobile App', year: 2023)
+      end
+    end
 
     it 'searches content by title' do
       get '/api/v1/contents/search', params: { q: 'Interstellar' }
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result']).to be_an(Array)
-      found_content = json['result'].find { |c| c['original_name'] == 'Interstellar' }
+      found_content = json['result'].find { |c| c['original_name'] == interstellar_movie.content.original_name }
       expect(found_content).to be_present
       expect(found_content['content']['type']).to eq('Movie')
     end
@@ -116,12 +128,12 @@ RSpec.describe 'Api::V1::Contents', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result']).to be_an(Array)
       expect(json['result'].length).to be > 0
-      
+
       # Find Dark Knight which has year 2008
-      dark_knight_content = json['result'].find { |c| c['original_name'] == 'The Dark Knight' }
+      dark_knight_content = json['result'].find { |c| c['original_name'] == dark_knight_movie.content.original_name }
       expect(dark_knight_content).to be_present
       expect(dark_knight_content['year']).to eq(2008)
     end
@@ -131,8 +143,8 @@ RSpec.describe 'Api::V1::Contents', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
-      found_content = json['result'].find { |c| c['original_name'] == 'Interstellar' }
+
+      found_content = json['result'].find { |c| c['original_name'] == interstellar_movie.content.original_name }
       expect(found_content).to be_present
     end
 
@@ -141,8 +153,8 @@ RSpec.describe 'Api::V1::Contents', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
-      netflix_content = json['result'].find { |c| c['original_name'].include?('Netflix') }
+
+      netflix_content = json['result'].find { |c| c['original_name'].include?(netflix_app.content.original_name) }
       expect(netflix_content).to be_present
       expect(netflix_content['content']['type']).to eq('ProviderApp')
     end

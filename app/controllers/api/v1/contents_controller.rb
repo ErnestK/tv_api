@@ -31,8 +31,8 @@ module Api
         available_types = Content.contentable_classes
 
         unless available_types.include?(requested_type)
-          raise ArgumentError,
-                "Invalid content type: #{params[:type]}. Available types: #{available_types.map(&:underscore).join(', ')}"
+          available_list = available_types.map(&:underscore).join(', ')
+          raise ArgumentError, "Invalid content type: #{params[:type]}. Available types: #{available_list}"
         end
 
         requested_type

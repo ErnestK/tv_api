@@ -9,4 +9,4 @@ json.result do
       json.type content.contentable_type
     end
   end
-end 
+end
