@@ -8,6 +8,7 @@ module Api
       rescue_from StandardError, with: :render_internal_error
       rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
       rescue_from ArgumentError, with: :render_bad_request
+      rescue_from ActionController::ParameterMissing, with: :render_bad_request
 
       private
 

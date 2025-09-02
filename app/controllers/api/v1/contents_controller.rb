@@ -12,12 +12,15 @@ module Api
         @contents = @contents.where(contentable_type: content_type) if content_type.present?
       end
 
+      def search
+        query = params.require(:q)
+        @contents = Content.search(query).preload(:contentable)
+      end
+
       private
 
       def country
-        country_code = params[:country]
-        raise ArgumentError, 'Country parameter is required' if country_code.blank?
-
+        country_code = params.require(:country)
         @country ||= Country.find_by!(code: country_code.upcase)
       end
 

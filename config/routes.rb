@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :contents, only: [:index]
+      resources :contents, only: [:index] do
+        collection do
+          get :search
+        end
+      end
 
       resources :movies, only: [:show]
       resources :tv_shows, only: [:show]

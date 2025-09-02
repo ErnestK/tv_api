@@ -87,10 +87,73 @@ RSpec.describe 'Api::V1::Contents', type: :request do
     it 'requires country parameter' do
       get '/api/v1/contents'
 
-      expect(response).to have_http_status(:bad_request) # ArgumentError → 400 Bad Request
+      expect(response).to have_http_status(:bad_request)
       json = response.parsed_body
       expect(json['error']).to eq('Bad Request')
-      expect(json['message']).to eq('Country parameter is required')
+      expect(json['message']).to include('param is missing or the value is empty: country')
+    end
+  end
+
+  describe 'GET /api/v1/contents/search' do
+    let!(:interstellar_movie) { create(:movie).tap { |m| m.content.update!(original_name: 'Interstellar', year: 2014) } }
+    let!(:dark_knight_movie) { create(:movie).tap { |m| m.content.update!(original_name: 'The Dark Knight', year: 2008) } }
+    let!(:netflix_app) { create(:provider_app).tap { |a| a.content.update!(original_name: 'Netflix Mobile App', year: 2023) } }
+
+    it 'searches content by title' do
+      get '/api/v1/contents/search', params: { q: 'Interstellar' }
+
+      expect(response).to have_http_status(:ok)
+      json = response.parsed_body
+      
+      expect(json['result']).to be_an(Array)
+      found_content = json['result'].find { |c| c['original_name'] == 'Interstellar' }
+      expect(found_content).to be_present
+      expect(found_content['content']['type']).to eq('Movie')
+    end
+
+    it 'searches content by year' do
+      get '/api/v1/contents/search', params: { q: '2008' }
+
+      expect(response).to have_http_status(:ok)
+      json = response.parsed_body
+      
+      expect(json['result']).to be_an(Array)
+      expect(json['result'].length).to be > 0
+      
+      # Find Dark Knight which has year 2008
+      dark_knight_content = json['result'].find { |c| c['original_name'] == 'The Dark Knight' }
+      expect(dark_knight_content).to be_present
+      expect(dark_knight_content['year']).to eq(2008)
+    end
+
+    it 'searches by partial title' do
+      get '/api/v1/contents/search', params: { q: 'Inter' }
+
+      expect(response).to have_http_status(:ok)
+      json = response.parsed_body
+      
+      found_content = json['result'].find { |c| c['original_name'] == 'Interstellar' }
+      expect(found_content).to be_present
+    end
+
+    it 'searches provider app by name' do
+      get '/api/v1/contents/search', params: { q: 'Netflix' }
+
+      expect(response).to have_http_status(:ok)
+      json = response.parsed_body
+      
+      netflix_content = json['result'].find { |c| c['original_name'].include?('Netflix') }
+      expect(netflix_content).to be_present
+      expect(netflix_content['content']['type']).to eq('ProviderApp')
+    end
+
+    it 'returns 400 for missing query parameter' do
+      get '/api/v1/contents/search'
+
+      expect(response).to have_http_status(:bad_request)
+      json = response.parsed_body
+      expect(json['error']).to eq('Bad Request')
+      expect(json['message']).to include('param is missing or the value is empty: q')
     end
   end
 end
