@@ -11,7 +11,7 @@ RSpec.describe 'Api::V1::ChannelPrograms', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result']['id']).to eq(program.id)
       expect(json['result']['channel_id']).to eq(program.channel_id)
       expect(json['result']['schedule']).to be_a(String)
@@ -29,7 +29,7 @@ RSpec.describe 'Api::V1::ChannelPrograms', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result']['id']).to eq(program.id)
       expect(json['result']['time_watched']).to eq(1800)
     end
