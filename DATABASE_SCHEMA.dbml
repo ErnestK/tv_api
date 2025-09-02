@@ -1,0 +1,151 @@
+// === MAIN CONTENT TABLE ===
+Table contents {
+  id bigserial [pk]
+  original_name varchar(255) [not null]
+  contentable_type varchar(50) [not null, note: 'Movie, TvShow, TvShowsSeason, TvShowsSeasonsEpisode, Channel, ChannelProgram, ProviderApp']
+  contentable_id bigint [not null, note: 'ID in corresponding table']
+  year integer [null, note: 'Centralized year field for all content types']
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+  
+  indexes {
+    (contentable_type, contentable_id) [unique, name: 'idx_content_polymorphic']
+  }
+}
+
+// === AVAILABILITY SYSTEM ===
+Table availabilities {
+  id bigserial [pk]
+  content_id bigint [ref: > contents.id, not null]
+  provider_app_id bigint [ref: > provider_apps.id, not null]
+  country_id bigint [ref: > countries.id, not null]
+  stream_info jsonb [null, note: 'Flexible streaming information']
+  
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    (content_id, provider_app_id, country_id) [unique, name: 'idx_availability_unique']
+  }
+}
+
+Table provider_apps {
+  id bigserial [pk]
+  created_at timestamp [default: `now()`]
+}
+
+Table countries {
+  id bigserial [pk]
+  name varchar(100) [not null, unique]
+  code varchar(5) [not null, unique, note: 'GB, ES, US, etc.']
+  created_at timestamp [default: `now()`]
+}
+
+// === CONTENT TYPE TABLES ===
+Table movies {
+  id bigserial [pk]
+  duration_in_seconds integer [not null]
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
+
+Table tv_shows {
+  id bigserial [pk]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
+
+Table tv_shows_seasons {
+  id bigserial [pk]
+  tv_show_id bigint [ref: > tv_shows.id, not null]
+  number integer [not null]
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+  
+  indexes {
+    (tv_show_id, number) [unique, name: 'idx_seasons_show_number']
+  }
+}
+
+Table tv_shows_seasons_episodes {
+  id bigserial [pk]
+  tv_shows_season_id bigint [ref: > tv_shows_seasons.id, not null]
+  number integer [not null]
+  duration_in_seconds integer [not null]
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+  
+  indexes {
+    (tv_shows_season_id, number) [unique, name: 'idx_episodes_season_number']
+  }
+}
+
+Table channels {
+  id bigserial [pk]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
+
+Table channel_programs {
+  id bigserial [pk]
+  channel_id bigint [ref: > channels.id, not null]
+  schedule text [not null, note: 'Array of time ranges for program broadcasts (tstzrange[])']
+
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+
+  indexes {
+    channel_id [name: 'idx_channel_programs_channel']
+  }
+}
+
+// === POLYMORPHIC RELATIONSHIPS ===
+// These represent polymorphic associations via contents.contentable_type/contentable_id
+Ref: contents.contentable_id > movies.id
+Ref: contents.contentable_id > tv_shows.id
+Ref: contents.contentable_id > tv_shows_seasons.id
+Ref: contents.contentable_id > tv_shows_seasons_episodes.id
+Ref: contents.contentable_id > channels.id
+Ref: contents.contentable_id > channel_programs.id
+Ref: contents.contentable_id > provider_apps.id
+
+// === USER SYSTEM ===
+Table users {
+  id bigserial [pk]
+  name varchar(255) [not null]
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
+
+Table favorites {
+  id bigserial [pk]
+  user_id bigint [ref: > users.id, not null]
+  provider_app_id bigint [ref: > provider_apps.id, not null]
+  order_num integer [not null, note: 'Position in user favorites list']
+  
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    (user_id, provider_app_id) [unique, name: 'idx_favorites_user_provider_app']
+    (user_id, order_num) [unique, name: 'idx_favorites_user_order']
+  }
+}
+
+Table most_watcheds {
+  id bigserial [pk]
+  user_id bigint [ref: > users.id, not null]
+  channel_program_id bigint [ref: > channel_programs.id, not null]
+  time_overall integer [not null, default: 0, note: 'Total time watched in seconds']
+  
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+  
+  indexes {
+    (user_id, channel_program_id) [unique, name: 'idx_most_watched_user_channel_program']
+    (user_id, time_overall) [name: 'idx_most_watched_time']
+  }
+} 
