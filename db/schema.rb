@@ -26,10 +26,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_074516) do
 
   create_table "channel_programs", force: :cascade do |t|
     t.bigint "channel_id", null: false
-    t.tstzrange "time_range", null: false
+    t.tstzrange "schedule", null: false, array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["channel_id", "time_range"], name: "idx_channel_programs_channel_time_composite", using: :gist
+    t.index ["channel_id"], name: "index_channel_programs_on_channel_id"
   end
 
   create_table "channels", force: :cascade do |t|

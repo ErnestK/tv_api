@@ -75,7 +75,10 @@ hbo = Channel.create_with_content!(
 ChannelProgram.create_with_content!(
   {
     channel: hbo,
-    time_range: Time.zone.parse('2024-01-01 20:00')..Time.zone.parse('2024-01-01 22:00')
+    schedule: [
+      Time.zone.parse('2024-01-01 20:00')..Time.zone.parse('2024-01-01 22:00'),
+      Time.zone.parse('2024-01-02 20:00')..Time.zone.parse('2024-01-02 22:00')
+    ]
   },
   { original_name: 'Game of Thrones Rerun' }
 )
@@ -83,7 +86,9 @@ ChannelProgram.create_with_content!(
 ChannelProgram.create_with_content!(
   {
     channel: hbo,
-    time_range: Time.zone.parse('2024-01-01 22:00')..Time.zone.parse('2024-01-02 00:00')
+    schedule: [
+      Time.zone.parse('2024-01-01 22:00')..Time.zone.parse('2024-01-02 00:00')
+    ]
   },
   { original_name: 'The Last of Us' }
 )
@@ -97,7 +102,9 @@ netflix = Channel.create_with_content!(
 ChannelProgram.create_with_content!(
   {
     channel: netflix,
-    time_range: Time.zone.parse('2024-01-01 19:00')..Time.zone.parse('2024-01-01 20:30')
+    schedule: [
+      Time.zone.parse('2024-01-01 19:00')..Time.zone.parse('2024-01-01 20:30')
+    ]
   },
   { original_name: 'Stranger Things Marathon' }
 )

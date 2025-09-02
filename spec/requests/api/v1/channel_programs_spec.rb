@@ -14,7 +14,8 @@ RSpec.describe 'Api::V1::ChannelPrograms', type: :request do
 
       expect(json['result']['id']).to eq(program.id)
       expect(json['result']['channel_id']).to eq(program.channel_id)
-      expect(json['result']['schedule']).to be_a(String)
+      expect(json['result']['schedule']).to be_an(Array)
+      expect(json['result']['schedule'].length).to be > 0
       expect(json['result']['created_at']).to be_present
       expect(json['result']['title']).to eq(program.content.original_name)
       expect(json['result']['year']).to eq(program.content.year)

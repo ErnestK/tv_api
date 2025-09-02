@@ -7,5 +7,5 @@ class ChannelProgram < ApplicationRecord
   has_many :most_watched, dependent: :destroy
   has_many :users_who_watched, through: :most_watched, source: :user
 
-  validates :time_range, presence: true
+  validates :schedule, presence: true
 end

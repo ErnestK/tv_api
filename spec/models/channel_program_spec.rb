@@ -10,10 +10,10 @@ RSpec.describe ChannelProgram, type: :model do
     expect(program.content).to be_present
   end
 
-  it 'validates time_range presence' do
-    program = build(:channel_program, time_range: nil)
+  it 'validates schedule presence' do
+    program = build(:channel_program, schedule: nil)
 
     expect(program).not_to be_valid
-    expect(program.errors[:time_range]).to include("can't be blank")
+    expect(program.errors[:schedule]).to include("can't be blank")
   end
 end
