@@ -137,14 +137,28 @@ interstellar_content = Content.find_by(original_name: 'Interstellar')
 
 # Netflix available in US and UK
 if netflix_app && interstellar_content
-  Availability.create!(content: interstellar_content, provider_app: netflix_app, country: us)
-  Availability.create!(content: interstellar_content, provider_app: netflix_app, country: uk)
+  Availability.create!(
+    content: interstellar_content, 
+    provider_app: netflix_app, 
+    country: us,
+    stream_info: { url: 'https://netflix.com/interstellar', quality: 'HD' }
+  )
+  Availability.create!(
+    content: interstellar_content, 
+    provider_app: netflix_app, 
+    country: uk,
+    stream_info: { url: 'https://netflix.co.uk/interstellar', quality: '4K' }
+  )
 end
 
 # HBO available in US only
 if hbo_app && interstellar_content
-  Availability.create!(content: interstellar_content, provider_app: hbo_app,
-                       country: us)
+  Availability.create!(
+    content: interstellar_content, 
+    provider_app: hbo_app, 
+    country: us,
+    stream_info: { url: 'https://hbomax.com/interstellar', quality: '4K', hdr: true }
+  )
 end
 
 Rails.logger.debug do

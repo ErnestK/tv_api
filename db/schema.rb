@@ -20,8 +20,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_074516) do
     t.bigint "content_id", null: false
     t.bigint "provider_app_id", null: false
     t.bigint "country_id", null: false
+    t.jsonb "stream_info"
     t.datetime "created_at", precision: nil
     t.index ["content_id", "provider_app_id", "country_id"], name: "idx_availability_unique", unique: true
+    t.index ["stream_info"], name: "index_availabilities_on_stream_info", using: :gin
   end
 
   create_table "channel_programs", force: :cascade do |t|
