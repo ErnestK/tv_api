@@ -10,6 +10,12 @@ module Api
       rescue_from ArgumentError, with: :render_bad_request
       rescue_from ActionController::ParameterMissing, with: :render_bad_request
 
+      resource_description do
+        api_version 'v1'
+        api_base_url '/api/v1'
+        description 'TV API - Streaming content management system'
+      end
+
       private
 
       def set_default_format

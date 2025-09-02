@@ -78,6 +78,9 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
+    apipie-rails (1.5.0)
+      actionpack (>= 5.0)
+      activesupport (>= 5.0)
     ast (2.4.3)
     base64 (0.3.0)
     benchmark (0.4.1)
@@ -267,6 +270,7 @@ PLATFORMS
   arm64-darwin-24
 
 DEPENDENCIES
+  apipie-rails
   bootsnap
   bullet
   byebug
