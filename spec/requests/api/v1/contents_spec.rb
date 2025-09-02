@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::Contents', type: :request do
       expect(json['result']).to be_an(Array)
       expect(json['result'].length).to eq(2) # movie + tv_show
 
-      content_types = json['result'].pluck('contentable_type')
+      content_types = json['result'].map { |c| c['content']['type'] }
       expect(content_types).to include('Movie', 'TvShow')
     end
 
@@ -42,9 +42,10 @@ RSpec.describe 'Api::V1::Contents', type: :request do
 
       expect(content_item['original_name']).to eq(movie.content.original_name)
       expect(content_item['year']).to eq(movie.content.year)
-      expect(content_item['contentable_type']).to eq('Movie')
       expect(content_item['created_at']).to eq(movie.content.created_at.iso8601(3))
-      expect(content_item['content_id']).to eq(movie.id)
+
+      expect(content_item['content']['id']).to eq(movie.id)
+      expect(content_item['content']['type']).to eq('Movie')
     end
 
     it 'filters content by type' do
@@ -54,7 +55,7 @@ RSpec.describe 'Api::V1::Contents', type: :request do
       json = response.parsed_body
 
       expect(json['result'].length).to eq(1)
-      expect(json['result'][0]['contentable_type']).to eq('Movie')
+      expect(json['result'][0]['content']['type']).to eq('Movie')
       expect(json['result'][0]['original_name']).to eq(movie.content.original_name)
     end
 
@@ -65,7 +66,7 @@ RSpec.describe 'Api::V1::Contents', type: :request do
       json = response.parsed_body
 
       expect(json['result'].length).to eq(1) # only movie available in GB
-      expect(json['result'][0]['contentable_type']).to eq('Movie')
+      expect(json['result'][0]['content']['type']).to eq('Movie')
     end
 
     it 'returns 400 for invalid content type' do
