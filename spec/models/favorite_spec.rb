@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Favorite, type: :model do
-  it 'belongs to user and content' do
-    favorite = create(:favorite)
+  let(:favorite) { create(:favorite) }
 
+  it 'belongs to user and content' do
     expect(favorite.user).to be_present
     expect(favorite.content).to be_present
   end

@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe ChannelProgram, type: :model do
-  it 'belongs to channel and has content' do
-    program = create(:channel_program)
+  let(:program) { create(:channel_program) }
 
+  it 'belongs to channel and has content' do
     expect(program.channel).to be_present
     expect(program.content).to be_present
   end

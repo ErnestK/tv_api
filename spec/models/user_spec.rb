@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  let(:user) { create(:user) }
+  let(:movie) { create(:movie) }
+
   it 'has associations to favorites and most_watched' do
-    user = create(:user)
-    movie = create(:movie)
     favorite = user.favorites.create!(content: movie.content)
     most_watched = user.most_watched.create!(content: movie.content, time_overall: 3600)
 

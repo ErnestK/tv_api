@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe MostWatched, type: :model do
-  it 'belongs to user and content' do
-    most_watched = create(:most_watched)
+  let(:most_watched) { create(:most_watched) }
 
+  it 'belongs to user and content' do
     expect(most_watched.user).to be_present
     expect(most_watched.content).to be_present
     expect(most_watched.time_overall).to be > 0

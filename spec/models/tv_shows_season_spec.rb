@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe TvShowsSeason, type: :model do
-  it 'belongs to tv_show and has content' do
-    season = create(:tv_shows_season)
+  let(:season) { create(:tv_shows_season) }
 
+  it 'belongs to tv_show and has content' do
     expect(season.tv_show).to be_present
     expect(season.content).to be_present
   end

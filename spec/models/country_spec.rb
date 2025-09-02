@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Country, type: :model do
+  let(:country) { create(:country) }
+
   it 'validates name and code uniqueness' do
     create(:country, name: 'USA', code: 'US')
 
@@ -11,7 +13,6 @@ RSpec.describe Country, type: :model do
   end
 
   it 'has availability association' do
-    country = create(:country)
     availability = create(:availability, country: country)
 
     expect(country.availability).to include availability

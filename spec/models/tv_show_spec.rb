@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe TvShow, type: :model do
+  let(:tv_show) { create(:tv_show) }
+
   it 'has content and seasons associations' do
-    tv_show = create(:tv_show)
     season = create(:tv_shows_season, tv_show: tv_show)
 
     expect(tv_show.content).to be_present
@@ -17,10 +18,12 @@ RSpec.describe TvShow, type: :model do
     expect(tv_show.content.original_name).to eq 'Test Show'
   end
 
-  it 'destroys seasons when destroyed' do
-    tv_show = create(:tv_show)
-    create(:tv_shows_season, tv_show: tv_show)
+  describe 'destruction' do
+    it 'destroys seasons when destroyed' do
+      tv_show_to_destroy = create(:tv_show)
+      create(:tv_shows_season, tv_show: tv_show_to_destroy)
 
-    expect { tv_show.destroy! }.to change(TvShowsSeason, :count).by(-1)
+      expect { tv_show_to_destroy.destroy! }.to change(TvShowsSeason, :count).by(-1)
+    end
   end
 end

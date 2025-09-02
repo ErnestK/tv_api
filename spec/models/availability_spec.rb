@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Availability, type: :model do
-  it 'belongs to content, app and country' do
-    availability = create(:availability)
+  let(:availability) { create(:availability) }
 
+  it 'belongs to content, app and country' do
     expect(availability.content).to be_present
     expect(availability.app).to be_present
     expect(availability.country).to be_present

@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe App, type: :model do
-  it 'has content association' do
-    app = create(:app)
+  let(:app) { create(:app) }
 
+  it 'has content association' do
     expect(app.content).to be_present
     expect(app.content.contentable).to eq app
   end
