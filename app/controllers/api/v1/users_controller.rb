@@ -15,18 +15,19 @@ module Api
       # GET /api/v1/users/:id/favorite_provider_apps
       def favorite_provider_apps
         @favorite_provider_apps = @user.favorites
-                     .preload(provider_app: :content)
-                     .order(:order_num)
+                                       .preload(provider_app: :content)
+                                       .order(:order_num)
       end
 
       # POST /api/v1/users/:id/favorite_provider_app
       def favorite_provider_app
         @favorite = @user.favorites.build(favorite_params)
-        
+
         if @favorite.save
           render json: { result: { message: 'Provider app favorited successfully' } }, status: :created
         else
-          render json: { error: 'Validation failed', message: @favorite.errors.full_messages }, status: :unprocessable_content
+          render json: { error: 'Validation failed', message: @favorite.errors.full_messages },
+                 status: :unprocessable_content
         end
       end
 
@@ -41,4 +42,4 @@ module Api
       end
     end
   end
-end 
+end

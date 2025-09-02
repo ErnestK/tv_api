@@ -17,7 +17,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result']).to be_an(Array)
       expect(json['result'].length).to eq(2)
 
@@ -40,7 +40,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result']).to be_an(Array)
       expect(json['result'].length).to eq(2)
 
@@ -55,7 +55,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
     let(:provider_app) { create(:provider_app) }
 
     it 'creates favorite provider app with position' do
-      post "/api/v1/users/#{user.id}/favorite_provider_app", 
+      post "/api/v1/users/#{user.id}/favorite_provider_app",
            params: { favorite: { provider_app_id: provider_app.id, order_num: 1 } }
 
       expect(response).to have_http_status(:created)
@@ -85,4 +85,4 @@ RSpec.describe 'Api::V1::Users', type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
-end 
+end
