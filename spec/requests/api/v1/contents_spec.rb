@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Api::V1::Contents', type: :request do
   let(:us_country) { Country.create!(name: 'United States', code: 'US') }
   let(:uk_country) { Country.create!(name: 'United Kingdom', code: 'GB') }
-  
+
   let(:movie) { create(:movie) }
   let(:tv_show) { create(:tv_show) }
   let(:provider_app) { create(:provider_app) }
@@ -23,11 +23,11 @@ RSpec.describe 'Api::V1::Contents', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result']).to be_an(Array)
       expect(json['result'].length).to eq(2) # movie + tv_show
-      
-      content_types = json['result'].map { |c| c['contentable_type'] }
+
+      content_types = json['result'].pluck('contentable_type')
       expect(content_types).to include('Movie', 'TvShow')
     end
 
@@ -36,10 +36,10 @@ RSpec.describe 'Api::V1::Contents', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result'].length).to eq(1)
       content_item = json['result'][0]
-      
+
       expect(content_item['original_name']).to eq(movie.content.original_name)
       expect(content_item['year']).to eq(movie.content.year)
       expect(content_item['contentable_type']).to eq('Movie')
@@ -52,7 +52,7 @@ RSpec.describe 'Api::V1::Contents', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result'].length).to eq(1)
       expect(json['result'][0]['contentable_type']).to eq('Movie')
       expect(json['result'][0]['original_name']).to eq(movie.content.original_name)
@@ -63,7 +63,7 @@ RSpec.describe 'Api::V1::Contents', type: :request do
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
-      
+
       expect(json['result'].length).to eq(1) # only movie available in GB
       expect(json['result'][0]['contentable_type']).to eq('Movie')
     end
@@ -92,4 +92,4 @@ RSpec.describe 'Api::V1::Contents', type: :request do
       expect(json['message']).to eq('Country parameter is required')
     end
   end
-end 
+end

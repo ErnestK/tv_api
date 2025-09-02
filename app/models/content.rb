@@ -26,10 +26,10 @@ class Content < ApplicationRecord
 
   def self.contentable_classes
     @contentable_classes ||= begin
-                               Rails.application.eager_load!
-                               ActiveRecord::Base.descendants
-                                                 .select { |klass| klass.include?(Contentable) }
-                                                 .map(&:name)
-                             end
+      Rails.application.eager_load!
+      ActiveRecord::Base.descendants
+                        .select { |klass| klass.include?(Contentable) }
+                        .map(&:name)
+    end
   end
 end

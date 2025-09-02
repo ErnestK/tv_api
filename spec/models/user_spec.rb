@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
   it 'has associations to favorites and most_watched' do
     provider_app = create(:provider_app)
     channel_program = create(:channel_program)
-    
+
     favorite = user.favorites.create!(provider_app: provider_app, order_num: 1)
     most_watched = user.most_watched.create!(channel_program: channel_program, time_overall: 3600)
 

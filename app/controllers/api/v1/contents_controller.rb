@@ -17,20 +17,21 @@ module Api
       def country
         country_code = params[:country]
         raise ArgumentError, 'Country parameter is required' if country_code.blank?
-        
+
         @country ||= Country.find_by!(code: country_code.upcase)
       end
 
       def content_type
         return nil if params[:type].blank?
-        
+
         requested_type = params[:type].camelize
         available_types = Content.contentable_classes
-        
+
         unless available_types.include?(requested_type)
-          raise ArgumentError, "Invalid content type: #{params[:type]}. Available types: #{available_types.map(&:underscore).join(', ')}"
+          raise ArgumentError,
+                "Invalid content type: #{params[:type]}. Available types: #{available_types.map(&:underscore).join(', ')}"
         end
-        
+
         requested_type
       end
     end
