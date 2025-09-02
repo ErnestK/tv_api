@@ -14,7 +14,7 @@ module Api
         request.format = :json
       end
 
-      def render_not_found(exception)
+      def render_not_found(_exception)
         render json: {
           error: 'Not Found',
           message: 'Row not exist'

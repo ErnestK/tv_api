@@ -10,8 +10,8 @@ RSpec.describe 'Api::V1::Movies', type: :request do
       get "/api/v1/movies/#{movie.id}"
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
-      
+      json = response.parsed_body
+
       result = json['result']
       expect(result['id']).to eq(movie.id)
       expect(result['duration_in_seconds']).to eq(movie.duration_in_seconds)
@@ -24,8 +24,8 @@ RSpec.describe 'Api::V1::Movies', type: :request do
       get '/api/v1/movies/999'
 
       expect(response).to have_http_status(:not_found)
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['error']).to eq('Not Found')
     end
   end
-end 
+end
