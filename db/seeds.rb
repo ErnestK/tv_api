@@ -150,16 +150,19 @@ Rails.logger.debug 'Creating users and their activity...'
 john = User.create!(name: 'John Doe')
 jane = User.create!(name: 'Jane Smith')
 
-# Add some favorites
-interstellar_content = Content.find_by(original_name: 'Interstellar')
-breaking_bad_content = Content.find_by(original_name: 'Breaking Bad')
+# Add favorite provider apps with positions
+netflix_app = ProviderApp.joins(:content).find_by(contents: { original_name: 'Netflix Mobile App' })
+hbo_app = ProviderApp.joins(:content).find_by(contents: { original_name: 'HBO Max App' })
 
-john.favorites.create!(content: interstellar_content) if interstellar_content
-jane.favorites.create!(content: breaking_bad_content) if breaking_bad_content
+john.favorites.create!(provider_app: netflix_app, order_num: 1) if netflix_app
+jane.favorites.create!(provider_app: hbo_app, order_num: 1) if hbo_app
 
-# Add watch time
-john.most_watched.create!(content: interstellar_content, time_overall: 7200) if interstellar_content
-jane.most_watched.create!(content: breaking_bad_content, time_overall: 3600) if breaking_bad_content
+# Add watch time for channel programs
+game_of_thrones_program = ChannelProgram.joins(:content).find_by(contents: { original_name: 'Game of Thrones Rerun' })
+last_of_us_program = ChannelProgram.joins(:content).find_by(contents: { original_name: 'The Last of Us' })
+
+john.most_watched.create!(channel_program: game_of_thrones_program, time_overall: 7200) if game_of_thrones_program
+jane.most_watched.create!(channel_program: last_of_us_program, time_overall: 3600) if last_of_us_program
 
 Rails.logger.debug do
   "Created #{User.count} users with #{Favorite.count} favorites and #{MostWatched.count} watch records"

@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :most_watched do
     association :user
-    content { create(:movie).content }
+    association :channel_program
     time_overall { 3600 }
   end
 end

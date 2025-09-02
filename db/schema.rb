@@ -57,18 +57,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_074516) do
 
   create_table "favorites", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
+    t.bigint "provider_app_id", null: false
+    t.integer "order_num", null: false
     t.datetime "created_at", precision: nil
-    t.index ["user_id", "content_id"], name: "idx_favorites_user_content", unique: true
+    t.index ["user_id", "order_num"], name: "idx_favorites_user_order", unique: true
+    t.index ["user_id", "provider_app_id"], name: "idx_favorites_user_provider_app", unique: true
   end
 
   create_table "most_watcheds", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "content_id", null: false
+    t.bigint "channel_program_id", null: false
     t.integer "time_overall", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id", "content_id"], name: "idx_most_watched_user_content", unique: true
+    t.index ["user_id", "channel_program_id"], name: "idx_most_watched_user_channel_program", unique: true
     t.index ["user_id", "time_overall"], name: "idx_most_watched_time"
   end
 
@@ -114,9 +116,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_074516) do
   add_foreign_key "availabilities", "countries"
   add_foreign_key "availabilities", "provider_apps"
   add_foreign_key "channel_programs", "channels"
-  add_foreign_key "favorites", "contents"
+  add_foreign_key "favorites", "provider_apps"
   add_foreign_key "favorites", "users"
-  add_foreign_key "most_watcheds", "contents"
+  add_foreign_key "most_watcheds", "channel_programs"
   add_foreign_key "most_watcheds", "users"
   add_foreign_key "tv_shows_seasons", "tv_shows"
   add_foreign_key "tv_shows_seasons_episodes", "tv_shows_seasons"

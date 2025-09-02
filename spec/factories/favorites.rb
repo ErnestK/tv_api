@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :favorite do
     association :user
-    content { create(:movie).content }
+    association :provider_app
+    order_num { 1 }
   end
 end
