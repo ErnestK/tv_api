@@ -8,5 +8,6 @@ class CreateCountries < ActiveRecord::Migration[7.1]
     end
 
     add_index :countries, :name, unique: true
+    add_index :countries, :code, unique: true
   end
 end

@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_02_074516) do
     t.string "name", limit: 100, null: false
     t.string "code", limit: 5, null: false
     t.datetime "created_at", precision: nil
+    t.index ["code"], name: "index_countries_on_code", unique: true
     t.index ["name"], name: "index_countries_on_name", unique: true
   end
 
