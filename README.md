@@ -16,23 +16,11 @@ bin/rails db:create db:migrate db:seed
 
 ## 🏗️ Database Architecture
 
-The system uses a sophisticated polymorphic architecture centered around a `Content` table:
+The system uses a polymorphic architecture around a `Content` table:
 
-```
-Content (Polymorphic Hub)
-├── Movies
-├── TV Shows → Seasons → Episodes  
-├── Channels → Channel Programs
-└── Provider Apps
+![Database Schema](docs/database_schema.png)
 
-User Activity
-├── Favorites (Provider Apps + Position)
-└── Most Watched (Channel Programs + Time)
-
-Availability (Content ↔ Apps ↔ Countries)
-```
-
-**📊 Complete database schema:** [DATABASE_SCHEMA.dbml](./DATABASE_SCHEMA.dbml) (compatible with [dbdiagram.io](https://dbdiagram.io/d))
+**📊 Complete database schema:** [DATABASE_SCHEMA.dbml](./docs/DATABASE_SCHEMA.dbml) (compatible with [dbdiagram.io](https://dbdiagram.io/d))
 
 ### Key Design Decisions
 
@@ -88,7 +76,7 @@ user.most_watched → any content with time tracking
 Comprehensive API documentation available in multiple formats:
 
 - **Interactive**: [Apipie Web Interface](http://localhost:3000/apipie)
-- **Detailed**: [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) - Complete examples and usage
+- **Detailed**: [API_DOCUMENTATION.md](./docs/API_DOCUMENTATION.md) - Complete examples and usage
 - **Quick Reference**: Generated via `bundle exec rake routes`
 
 ## 🛠️ Development
