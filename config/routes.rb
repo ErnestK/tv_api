@@ -10,6 +10,15 @@ Rails.application.routes.draw do
       resources :channels, only: [:show]
       resources :channel_programs, only: [:show]
       resources :provider_apps, only: [:show]
+
+      # User-specific endpoints
+      resources :users, only: [] do
+        member do
+          get :favorite_channel_programs
+          get :favorite_provider_apps
+          post :favorite_provider_app
+        end
+      end
     end
   end
 end
