@@ -84,7 +84,7 @@ Comprehensive API documentation available in multiple formats:
 # Setup
 bundle install
 docker-compose up -d
-bin/rails db:setup
+bin/rails db:create db:migrate db:seed
 
 # Testing  
 bundle exec rspec
