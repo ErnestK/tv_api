@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  namespace :api do
+    namespace :v1 do
+      resources :contents, only: [:index]
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+      resources :movies, only: [:show]
+      resources :tv_shows, only: [:show]
+      resources :tv_shows_seasons, only: [:show]
+      resources :tv_shows_seasons_episodes, only: [:show]
+      resources :channels, only: [:show]
+      resources :channel_programs, only: [:show]
+      resources :apps, only: [:show]
+    end
+  end
 end
