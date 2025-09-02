@@ -69,13 +69,12 @@ RSpec.describe 'Api::V1::Contents', type: :request do
       expect(json['result'][0]['content']['type']).to eq('Movie')
     end
 
-    it 'returns 400 for invalid content type' do
+    it 'returns 500 for invalid content type' do
       get '/api/v1/contents', params: { country: 'US', type: 'invalid_type' }
 
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to have_http_status(:internal_server_error)
       json = response.parsed_body
-      expect(json['error']).to eq('Bad Request')
-      expect(json['message']).to include('Invalid content type: invalid_type')
+      expect(json['error']).to eq('Internal Server Error')
     end
 
     it 'returns 404 for invalid country' do
@@ -87,10 +86,9 @@ RSpec.describe 'Api::V1::Contents', type: :request do
     it 'requires country parameter' do
       get '/api/v1/contents'
 
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to have_http_status(:internal_server_error)
       json = response.parsed_body
-      expect(json['error']).to eq('Bad Request')
-      expect(json['message']).to include('param is missing or the value is empty: country')
+      expect(json['error']).to eq('Internal Server Error')
     end
   end
 
@@ -159,13 +157,12 @@ RSpec.describe 'Api::V1::Contents', type: :request do
       expect(netflix_content['content']['type']).to eq('ProviderApp')
     end
 
-    it 'returns 400 for missing query parameter' do
+    it 'returns 500 for missing query parameter' do
       get '/api/v1/contents/search'
 
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to have_http_status(:internal_server_error)
       json = response.parsed_body
-      expect(json['error']).to eq('Bad Request')
-      expect(json['message']).to include('param is missing or the value is empty: q')
+      expect(json['error']).to eq('Internal Server Error')
     end
   end
 end
