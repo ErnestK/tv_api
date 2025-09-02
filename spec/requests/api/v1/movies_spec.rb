@@ -6,7 +6,7 @@ RSpec.describe 'Api::V1::Movies', type: :request do
   let(:movie) { create(:movie) }
 
   describe 'GET /api/v1/movies/:id' do
-    it 'returns movie with content' do
+    it 'returns movie with all fields' do
       get "/api/v1/movies/#{movie.id}"
 
       expect(response).to have_http_status(:ok)
