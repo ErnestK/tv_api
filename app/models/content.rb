@@ -15,8 +15,16 @@ class Content < ApplicationRecord
   scope :search, lambda { |query|
     return all if query.blank?
 
-    search_sql = "to_tsvector('english', coalesce(original_name, '') || ' ' || " \
-                 "coalesce(year::text, '')) @@ plainto_tsquery('english', ?)"
-    where(search_sql, query)
+    normalized_query = normalize_search_query(query)
+    prefix_sql = "to_tsvector('english', coalesce(original_name, '') || ' ' || " \
+                 "coalesce(year::text, '')) @@ to_tsquery('english', ?)"
+    where(prefix_sql, normalized_query)
   }
+
+  # Normalize query for prefix search: "foo bar" => "foo:* & bar:*"
+  def self.normalize_search_query(query_str)
+    query = query_str.split(/[@[:space:]]+/)
+    query.compact_blank!
+    query.map { |str| "#{str}:*" }.join(' & ')
+  end
 end

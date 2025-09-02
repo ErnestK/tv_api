@@ -70,5 +70,11 @@ RSpec.describe Content, type: :model do
       expect(results).to include(interstellar.content)
       expect(results).not_to include(dark_knight.content)
     end
+
+    it 'searches by partial word' do
+      results = described_class.search('Inter')
+      expect(results).to include(interstellar.content)
+      expect(results).not_to include(dark_knight.content)
+    end
   end
 end
