@@ -5,4 +5,5 @@ json.result do
   json.schedule @program.time_range
   json.title @program.content.original_name
   json.year @program.content.year
+  json.time_watched @time_watched
 end
