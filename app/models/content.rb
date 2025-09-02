@@ -11,4 +11,18 @@ class Content < ApplicationRecord
 
   validates :original_name, presence: true, length: { maximum: 255 }
   validates :contentable_type, presence: true, length: { maximum: 50 }
+
+  scope :search, lambda { |query|
+    return all if query.blank?
+
+    search_sql = "to_tsvector('english', coalesce(original_name, '') || ' ' || " \
+                 "coalesce(year::text, '')) @@ plainto_tsquery('english', ?)"
+    where(search_sql, query)
+  }
+
+  def self.search_all_types(query)
+    return all if query.blank?
+
+    search(query)
+  end
 end

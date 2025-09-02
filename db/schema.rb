@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_09_01_191639) do
+ActiveRecord::Schema[7.1].define(version: 2025_09_02_074516) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
   create_table "apps", force: :cascade do |t|
@@ -47,6 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_01_191639) do
     t.integer "year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "to_tsvector('english'::regconfig, (((COALESCE(original_name, ''::character varying))::text || ' '::text) || COALESCE((year)::text, ''::text)))", name: "idx_content_search", using: :gin
     t.index ["contentable_type", "contentable_id"], name: "idx_content_polymorphic", unique: true
   end
 
