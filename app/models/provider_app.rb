@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class App < ApplicationRecord
+class ProviderApp < ApplicationRecord
+  self.table_name = 'provider_apps'
+
   include Contentable
 
   has_many :availability, dependent: :destroy

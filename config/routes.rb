@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       resources :tv_shows_seasons_episodes, only: [:show]
       resources :channels, only: [:show]
       resources :channel_programs, only: [:show]
-      resources :apps, only: [:show]
+      resources :provider_apps, only: [:show]
     end
   end
 end

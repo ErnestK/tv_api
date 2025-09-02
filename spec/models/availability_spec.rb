@@ -7,19 +7,19 @@ RSpec.describe Availability, type: :model do
 
   it 'belongs to content, app and country' do
     expect(availability.content).to be_present
-    expect(availability.app).to be_present
+    expect(availability.provider_app).to be_present
     expect(availability.country).to be_present
   end
 
   it 'validates uniqueness of content per app and country' do
     movie = create(:movie)
-    app = create(:app)
+    provider_app = create(:provider_app)
     country = create(:country)
 
-    create(:availability, content: movie.content, app: app, country: country)
+    create(:availability, content: movie.content, provider_app: provider_app, country: country)
 
     expect do
-      create(:availability, content: movie.content, app: app, country: country)
+      create(:availability, content: movie.content, provider_app: provider_app, country: country)
     end.to raise_error(ActiveRecord::RecordInvalid)
   end
 end

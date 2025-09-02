@@ -35,7 +35,11 @@ RSpec.describe Content, type: :model do
   describe 'search functionality' do
     let!(:interstellar) { create(:movie).tap { |m| m.content.update!(original_name: 'Interstellar', year: 2014) } }
     let!(:dark_knight) { create(:movie).tap { |m| m.content.update!(original_name: 'The Dark Knight', year: 2008) } }
-    let!(:netflix_app) { create(:app).tap { |a| a.content.update!(original_name: 'Netflix Mobile App', year: 2023) } }
+    let!(:netflix_app) do
+      create(:provider_app).tap do |a|
+        a.content.update!(original_name: 'Netflix Mobile App', year: 2023)
+      end
+    end
 
     it 'searches by title' do
       results = described_class.search('Interstellar')

@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :availability do
     content { create(:movie).content }
-    association :app
+    association :provider_app
     association :country
   end
 end
