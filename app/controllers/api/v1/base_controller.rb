@@ -5,8 +5,8 @@ module Api
     class BaseController < ApplicationController
       before_action :set_default_format
 
-      rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
       rescue_from StandardError, with: :render_internal_error
+      rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 
       private
 
