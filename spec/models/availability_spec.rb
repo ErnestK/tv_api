@@ -15,7 +15,7 @@ RSpec.describe Availability, type: :model do
     movie = create(:movie)
     provider_app = create(:provider_app)
     country = create(:country)
-    
+
     create(:availability, content: movie.content, provider_app: provider_app, country: country)
 
     expect do
