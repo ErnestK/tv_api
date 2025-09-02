@@ -274,6 +274,16 @@ GET /api/v1/users/5/favorite_channel_programs
       "time_watched": 7200,
       "created_at": "2025-09-02T12:30:45.123Z",
       "updated_at": "2025-09-02T12:35:20.456Z"
+    },
+    {
+      "id": 2,
+      "channel_id": 2,
+      "schedule": ["2024-01-01 19:00:00 UTC..2024-01-01 20:30:00 UTC"],
+      "title": "Stranger Things Marathon",
+      "year": null,
+      "time_watched": 3600,
+      "created_at": "2025-09-02T12:31:15.789Z",
+      "updated_at": "2025-09-02T12:36:45.012Z"
     }
   ]
 }
@@ -303,6 +313,14 @@ GET /api/v1/users/5/favorite_provider_apps
       "position": 1,
       "created_at": "2025-09-02T12:30:45.123Z",
       "updated_at": "2025-09-02T12:35:20.456Z"
+    },
+    {
+      "id": 2,
+      "name": "HBO Max App",
+      "year": 2022,
+      "position": 2,
+      "created_at": "2025-09-02T12:31:30.234Z",
+      "updated_at": "2025-09-02T12:37:10.567Z"
     }
   ]
 }
