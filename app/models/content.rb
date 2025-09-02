@@ -23,4 +23,13 @@ class Content < ApplicationRecord
     query.compact_blank!
     query.map { |str| "#{str}:*" }.join(' & ')
   end
+
+  def self.contentable_classes
+    @contentable_classes ||= begin
+                               Rails.application.eager_load!
+                               ActiveRecord::Base.descendants
+                                                 .select { |klass| klass.include?(Contentable) }
+                                                 .map(&:name)
+                             end
+  end
 end

@@ -7,6 +7,7 @@ module Api
 
       rescue_from StandardError, with: :render_internal_error
       rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+      rescue_from ArgumentError, with: :render_bad_request
 
       private
 
@@ -19,6 +20,13 @@ module Api
           error: 'Not Found',
           message: 'Row not exist'
         }, status: :not_found
+      end
+
+      def render_bad_request(exception)
+        render json: {
+          error: 'Bad Request',
+          message: exception.message
+        }, status: :bad_request
       end
 
       def render_internal_error(exception)

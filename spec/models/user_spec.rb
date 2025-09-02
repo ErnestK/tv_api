@@ -7,8 +7,11 @@ RSpec.describe User, type: :model do
   let(:movie) { create(:movie) }
 
   it 'has associations to favorites and most_watched' do
-    favorite = user.favorites.create!(content: movie.content)
-    most_watched = user.most_watched.create!(content: movie.content, time_overall: 3600)
+    provider_app = create(:provider_app)
+    channel_program = create(:channel_program)
+    
+    favorite = user.favorites.create!(provider_app: provider_app, order_num: 1)
+    most_watched = user.most_watched.create!(channel_program: channel_program, time_overall: 3600)
 
     expect(user.favorites).to include favorite
     expect(user.most_watched).to include most_watched
