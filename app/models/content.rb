@@ -19,10 +19,4 @@ class Content < ApplicationRecord
                  "coalesce(year::text, '')) @@ plainto_tsquery('english', ?)"
     where(search_sql, query)
   }
-
-  def self.search_all_types(query)
-    return all if query.blank?
-
-    search(query)
-  end
 end
