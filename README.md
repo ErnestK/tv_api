@@ -75,7 +75,6 @@ user.most_watched → any content with time tracking
 
 Comprehensive API documentation available in multiple formats:
 
-- **Interactive**: [Apipie Web Interface](http://localhost:3000/apipie)
 - **Detailed**: [API_DOCUMENTATION.md](./docs/API_DOCUMENTATION.md) - Complete examples and usage
 - **Quick Reference**: Generated via `bundle exec rake routes`
 
